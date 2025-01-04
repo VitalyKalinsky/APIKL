@@ -37,4 +37,4 @@ If *files_to_check* is blank, it will check for keys in _locator.files_to_check_
 
 
 ## Developer ##
-My site: 
+My site: https://github.com/VitalyKalinsky

@@ -14,7 +14,7 @@ setup(
     description='This module helps to define API keys',
     long_description=readme(),
     long_description_content_type='text/markdown',
-    url='https://t.me/WhyTrueQ',
+    url='https://github.com/VitalyKalinsky/APIKeyL',
     packages=find_packages(),
     install_requires=['requests>=2.25.1'],
     classifiers=[
