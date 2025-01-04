@@ -1,6 +1,6 @@
 from os import listdir
 from os.path import isfile, join, splitext
-from src.APIKeyL.Found import Found
+from APIKL.Found import Found
 import math
 import re
 
@@ -25,7 +25,7 @@ def get_chance(password):
     return chance
 
 
-class APIKeyL:
+class APIKL:
     def __init__(self, files_to_check=None, probability: int = 5):
         if files_to_check is None:
             files_to_check = ['.']

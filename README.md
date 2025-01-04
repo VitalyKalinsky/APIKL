@@ -1,4 +1,4 @@
-# API Key Locator (APIKeyL) #
+# API Key Locator (APIKL) #
 
 ## What is this? ##
 This module allows you to check your project for API keys.
@@ -8,7 +8,7 @@ The module is based on the following structure:
 
     files = ['...']
     probability = 6
-    locator = APIKeyL(files, probability)
+    locator = APIKL(files, probability)
     locator.find_keys()
 
 ***files*** is for files you want to check *(blank to check the current folder)*\

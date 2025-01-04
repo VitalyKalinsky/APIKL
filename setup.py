@@ -7,7 +7,7 @@ def readme():
 
 
 setup(
-    name='APIKeyL',
+    name='APIKL',
     version='0.0.1',
     author='vitaly_kalinsky',
     author_email='kalinskyvii@gmail.com',
