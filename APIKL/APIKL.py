@@ -165,4 +165,4 @@ class APIKL:
                        sorted(self._found, key=lambda x: x.get_output_key_chance(), reverse=True))
         print('Found:')
         for f in found:
-            print(f"      {f.password} at {f.file_name}:{f.line} with probability {f.get_output_key_chance()}")
+            print(f"      {f.password} at {f.file_name}:{f.line} with probability {int(f.get_output_key_chance())}")
