@@ -1,3 +1,4 @@
+import os.path
 from os import listdir
 from os.path import isfile, join, splitext
 from APIKL.Found import Found
@@ -26,11 +27,11 @@ def get_chance(password):
 
 
 class APIKL:
-    def __init__(self, files_to_check=None, probability: int = 5):
-        if files_to_check is None:
-            files_to_check = ['.']
+    def __init__(self, user_files=None, probability: int = 5):
+        if user_files is None:
+            user_files = ['.']
         self._found = []
-        self._files_to_check = self.files(files_to_check)
+        self._user_files = self.get_files_to_check(user_files)
         self._probability = probability
 
     @property
@@ -42,21 +43,21 @@ class APIKL:
         self._probability = probability
 
     @property
-    def files_to_check(self):
-        return self._files_to_check
+    def user_files(self):
+        return self._user_files
 
-    @files_to_check.setter
-    def files_to_check(self, files_to_check):
-        self._files_to_check = files_to_check
+    @user_files.setter
+    def user_files(self, user_files):
+        self._user_files = user_files
 
-    def files(self, files_to_check):
-        out = []
-        for file in files_to_check:
+    def get_files_to_check(self, user_files):
+        files_to_check = []
+        for file in [file.replace('\\', '/') for file in user_files]:
             if not isfile(file):
-                out += self.rec_file(file)
+                files_to_check += self.rec_file(file)
             else:
-                out.append(file.replace('\\', '/'))
-        return out
+                files_to_check.append(file)
+        return files_to_check
 
     def rec_file(self, directory):
         files = []
@@ -153,16 +154,21 @@ class APIKL:
                 # Добавить в список 'found'
                 self._found.append(Found(str(file), i + 1, chance, password))
 
-    def find_keys(self, files_to_check: list = None):
+    def find_keys(self, user_files: list = None):
         self._found = []
-        if files_to_check is None:
-            files = self._files_to_check
-        else:
-            files = self.files(files_to_check)
-        for file in files:
+        files_to_check = self._user_files if user_files is None else self.get_files_to_check(user_files)
+        for file in files_to_check:
             self.check_file(file)
-        found = filter(lambda x: x.get_output_key_chance() >= self._probability,
-                       sorted(self._found, key=lambda x: x.get_output_key_chance(), reverse=True))
-        print('Found:')
-        for f in found:
-            print(f"      {f.password} at {f.file_name}:{f.line} with probability {int(f.get_output_key_chance())}")
+        found = sorted(self._found, key=lambda x: x.get_output_key_chance(), reverse=True)
+
+        if len(found) == 0:
+            print('Nothing found')
+        else:
+            print('Found:')
+            for f in found:
+                if f.get_output_key_chance() >= self._probability:
+                    print(
+                        f"      {f.password if len(f.password) <= 32 else f.password[0:32]} at "
+                        f"{os.path.relpath(f.file_name).replace('\\', '/')}:"
+                        f"{f.line} with probability "
+                        f"{int(f.get_output_key_chance())}")
