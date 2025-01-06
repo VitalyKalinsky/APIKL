@@ -168,7 +168,7 @@ class APIKL:
             for f in found:
                 if f.get_output_key_chance() >= self._probability:
                     print(
-                        f"      {f.password if len(f.password) <= 32 else f.password[0:32] + '...'} at "
+                        f"      {f.password if len(f.password) <= 32 else f.password[0:32]} at "
                         f"{os.path.relpath(f.file_name).replace('\\', '/')}:"
                         f"{f.line} with probability "
                         f"{int(f.get_output_key_chance())}")

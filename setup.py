@@ -8,10 +8,10 @@ def readme():
 
 setup(
     name='APIKL',
-    version='1.0',
+    version='0.0.1',
     author='vitaly_kalinsky',
     author_email='kalinskyvii@gmail.com',
-    description='This module allows you to find API keys and passwords in your project.',
+    description='This module helps to define API keys',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/VitalyKalinsky/APIKL',
