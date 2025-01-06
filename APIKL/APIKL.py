@@ -154,6 +154,7 @@ class APIKL:
                 self._found.append(Found(str(file), i + 1, chance, password))
 
     def find_keys(self, files_to_check: list = None):
+        self._found = []
         if files_to_check is None:
             files = self._files_to_check
         else:
