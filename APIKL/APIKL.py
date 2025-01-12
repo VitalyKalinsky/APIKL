@@ -31,7 +31,7 @@ class APIKL:
         if user_files is None:
             user_files = ['.']
         self._found = []
-        self._user_files = self.get_files_to_check(user_files)
+        self._user_files = self.__get_files_to_check(user_files)
         self._probability = probability
 
     @property
@@ -50,16 +50,16 @@ class APIKL:
     def user_files(self, user_files):
         self._user_files = user_files
 
-    def get_files_to_check(self, user_files):
+    def __get_files_to_check(self, user_files):
         files_to_check = []
         for file in [file.replace('\\', '/') for file in user_files]:
             if not isfile(file):
-                files_to_check += self.rec_file(file)
+                files_to_check += self.__rec_file(file)
             else:
                 files_to_check.append(file)
         return files_to_check
 
-    def rec_file(self, directory):
+    def __rec_file(self, directory):
         files = []
         # Проверяем, является ли directory директорий
         if not isfile(directory):
@@ -70,14 +70,14 @@ class APIKL:
                 if isfile(item):
                     files.append(item.replace('\\', '/'))
                 else:
-                    files.extend(self.rec_file(item))
+                    files.extend(self.__rec_file(item))
         else:
             # Если это файл, добавляем его в список
             files.append(directory)
 
         return files
 
-    def check_file(self, file_path):
+    def __check_file(self, file_path):
         try:
             _, extension = splitext(file_path)
             with open(file_path, 'r', encoding='utf-8') as file:
@@ -85,15 +85,15 @@ class APIKL:
 
             if extension == '.xml':
                 for i, line in enumerate(lines):
-                    self.check_xml_pass(line, i, file_path)
+                    self.__check_xml_pass(line, i, file_path)
             else:
                 for i, line in enumerate(lines):
-                    self.check_pass(line, i, file_path)
+                    self.__check_pass(line, i, file_path)
 
         except FileNotFoundError as e:
             raise RuntimeError from e
 
-    def check_pass(self, line, i, file):
+    def __check_pass(self, line, i, file):
         if '"' in line:
             sign = '"'
         elif "'" in line:
@@ -103,9 +103,9 @@ class APIKL:
 
         pass_to_add = ""
         chance = 0
-        self.match_and_add(line, i, file, sign, pass_to_add, chance)
+        self.__match_and_add(line, i, file, sign, pass_to_add, chance)
 
-    def match_and_add(self, line, i, file, sign, pass_to_add, chance):
+    def __match_and_add(self, line, i, file, sign, pass_to_add, chance):
         pattern = rf"{sign}(.*?){sign}"
         matches = re.findall(pattern, line)
 
@@ -122,7 +122,7 @@ class APIKL:
 
             self._found.append(Found(str(file), i + 1, chance, pass_to_add))
 
-    def check_xml_pass(self, line, i, file):
+    def __check_xml_pass(self, line, i, file):
         count = line.count('<')
 
         if count >= 1:
@@ -145,7 +145,7 @@ class APIKL:
                     pass_to_add = password
 
             if sign:
-                self.match_and_add(line, i, file, sign, pass_to_add, chance)
+                self.__match_and_add(line, i, file, sign, pass_to_add, chance)
         else:
             password = line.strip()
             chance = get_chance(password)
@@ -156,9 +156,9 @@ class APIKL:
 
     def find_keys(self, user_files: list = None):
         self._found = []
-        files_to_check = self._user_files if user_files is None else self.get_files_to_check(user_files)
+        files_to_check = self._user_files if user_files is None else self.__get_files_to_check(user_files)
         for file in files_to_check:
-            self.check_file(file)
+            self.__check_file(file)
         found = sorted(self._found, key=lambda x: x.get_output_key_chance(), reverse=True)
 
         if len(found) == 0:
