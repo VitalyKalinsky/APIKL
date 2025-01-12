@@ -23,6 +23,10 @@ def get_chance(password):
                 prob_byte = freq / total_bytes
                 ent -= prob_byte * math.log2(prob_byte)
         chance += (math.log(ent) * 10 % 10 * 1.9 + 1) if ent >= 3 else 0
+        # in documentation this formula is a little different
+        # l = Math.log(entropy);
+        # q = Math.floor(l);
+        # 19 * (l - q) + 1;
     return chance
 
 

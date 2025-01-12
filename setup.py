@@ -8,15 +8,14 @@ def readme():
 
 setup(
     name='APIKL',
-    version='1.1',
-    author='vitaly_kalinsky',
+    version='1.2',
+    author='Vitaly_Kalinsky',
     author_email='kalinskyvii@gmail.com',
     description='This module allows you to find API keys and passwords in your project.',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/VitalyKalinsky/APIKL',
     packages=find_packages(),
-    install_requires=['requests>=2.25.1'],
     classifiers=[
         'Programming Language :: Python :: 3.12',
         'License :: OSI Approved :: MIT License',
@@ -26,5 +25,5 @@ setup(
     project_urls={
         'GitHub': 'https://github.com/VitalyKalinsky'
     },
-    python_requires='>=3.6'
+    python_requires='>=3.12.2'
 )
